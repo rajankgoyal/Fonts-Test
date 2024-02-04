@@ -14,7 +14,7 @@ lcd = SSD1306_I2C(128, 64, i2c)
 # lcd.show()
 
 # Use a font drawer to draw font to FrameBuffer
-fd = FontDrawer( frame_buffer=lcd, font_name = 'arial_60' )
+fd = FontDrawer( frame_buffer=lcd, font_name = 'arial60' )
 fd.print_str( "8a", 0, 16 )
 # lcd.text('2/3 - 69 deg', 0, 8, 1)
 # fd.print_char( "#", 100, 2 )
