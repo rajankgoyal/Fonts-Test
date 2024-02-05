@@ -33,20 +33,20 @@ fb10 = framebuf.FrameBuffer(buffer10, img_res10[0], img_res10[1], framebuf.MONO_
 
 oled.fill(0) # clear the OLED
 oled.blit(fb, -5, 16) # show the image at location (x=0,y=0)
-oled.blit(fb5, 25, 16) # show the image at location (x=0,y=0)
+oled.blit(fb10, 25, 16) # show the image at location (x=0,y=0)
 # oled.blit(fb10, 55, 16) # show the image at location (x=0,y=0)
 oled.blit(fb5, 65, 16) # show the image at location (x=0,y=0)
 oled.blit(fb5, 95, 16) # show the image at location (x=0,y=0)
-
-oled.text('SUN   FEB 4   38', 0, 0, 1)
+## Calender with weather information
+oled.text('FEB', 0, 2, 1)
+oled.text('14', 29, 2, 1)
+oled.text('SUN', 58, 2, 1)
+oled.text(' 47', 100, 2, 1)
 oled.show() # show the new text and image
 ## Showing running time with blinking colon indicating seconds
 while True:
-    oled.fill_rect(60, 30, 5, 5, 1)
-    oled.fill_rect(60, 50, 5, 5, 1)
-    oled.show()
-    utime.sleep(.5)
-    oled.fill_rect(60, 30, 5, 5, 0)
-    oled.fill_rect(60, 50, 5, 5, 0)
-    oled.show()
-    utime.sleep(.5)
+    for second in range(2):
+        oled.fill_rect(60, 30, 5, 5, second)
+        oled.fill_rect(60, 50, 5, 5, second)
+        oled.show()
+        utime.sleep(1)
