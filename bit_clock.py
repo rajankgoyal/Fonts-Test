@@ -23,6 +23,8 @@ digit_1,digit_2,digit_3,digit_4 = 0,0,0,0
 
 ## Showing running time with blinking colon indicating seconds
 while True:
+    # Clears the Oled
+    oled.fill(0)
     timestamp=rtc.datetime()
     # TIME
     digit_1 = int(timestamp[4]/10)
@@ -39,10 +41,9 @@ while True:
     oled.text(DAYS[timestamp[3]], 58, 2, 1)
     #WEATHER
     oled.text(' 47', 100, 2, 1)
-    
+
     for second in range(2):
         oled.fill_rect(60, 30, 5, 5, second)
         oled.fill_rect(60, 50, 5, 5, second)
         oled.show()
         utime.sleep(1)
-        
