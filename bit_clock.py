@@ -1,9 +1,15 @@
-from machine import Pin, I2C, RTC
+from machine import Pin, I2C, RTC, ADC
 from oled import Write, GFX, SSD1306_I2C
 from oled.fonts import ubuntu_mono_15, ubuntu_mono_20, bookerly_20
 from ssd1306 import SSD1306_I2C
 import framebuf, sys, utime, imgfile, network, socket
 
+
+def ReadTemperature():
+    adc_value = sensor.read_u16()
+    volt = (3.3/65535) * adc_value
+    temperature = 27 - (volt - 0.706)/0.001721
+    return round(temperature, 1)
 
 def bit_numbers(number):
     buffer,img_res = imgfile.get_img(number) # get the image byte array
@@ -82,6 +88,9 @@ oled_right = SSD1306_I2C(pix_res_x, pix_res_y, i2c_right)
 rtc=machine.RTC()
 digit_1,digit_2,digit_3,digit_4 = 0,0,0,0
 
+# ADC
+adcpin = 4
+sensor = machine.ADC(adcpin)
 #big fonts
 write20 = Write(oled, ubuntu_mono_20)
 write20_right = Write(oled_right, ubuntu_mono_20)
@@ -104,10 +113,17 @@ while True:
     write20.text(MONTHS[timestamp[1]], 50, 0, 1)
     write20.text(str("%02d"%(timestamp[2])), 105, 0, 1)
     write20.text(DAYS[timestamp[3]], 0, 0, 1)
-    #WEATHER
-    write20_right.text(' 47', 100, 0, 1)
-    oled_right.blit(bit_numbers(4), 64, 19) # show the image at location (x=0,y=0)
-    oled_right.blit(bit_numbers(7), 94, 19) # show the image at location (x=0,y=0)
+    #STOCKS
+    write20_right.text('PLTR', 0, 0, 1)
+    write20_right.text('8847.45', 55, 0, 1)
+    # OUTSIDE TEMPERATURE
+    oled_right.blit(bit_numbers(int((((ReadTemperature()*(9/5))+32)-32)/10)), -5, 19) # show the image at location (x=0,y=0)
+    oled_right.blit(bit_numbers(int((((ReadTemperature()*(9/5))+32)-32)%10)), 25, 19) # show the image at location (x=0,y=0)
+    # DIVIDING LINE
+    oled_right.vline(63, 25, 35, 2)
+    # INSIDE TEMPERATURE
+    oled_right.blit(bit_numbers(int((((ReadTemperature()*(9/5))+32)-6)/10)), 64, 19) # show the image at location (x=0,y=0)
+    oled_right.blit(bit_numbers(int((((ReadTemperature()*(9/5))+32)-6)%10)), 94, 19) # show the image at location (x=0,y=0)
     for second in range(2):
         oled.fill_rect(60, 30, 5, 5, second)
         oled.fill_rect(60, 50, 5, 5, second)

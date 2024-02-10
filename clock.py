@@ -14,29 +14,29 @@ oled = SSD1306_I2C(WIDTH, HEIGHT, i2c)
 write20 = Write(oled, ubuntu_mono_20)
 
 # # Connect to WLAN
-# wlan = network.WLAN(network.STA_IF)
-# wlan.active(True)
-# wlan.connect("NWRKTEST", "FASTCARS1")
-# while not wlan.isconnected():
-#     pass
-# print('Connected to WLAN')
-# 
-# response = urequests.get('https://official-joke-api.appspot.com/random_joke')
-# data = response.json()
-# print(data['setup'])
-# print(data['punchline'])
-# write20.text(data['setup'], 0, 0)
-# write20.text(data['punchline'], 0, 40)
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect("NWRKTEST", "FASTCARS1")
+while not wlan.isconnected():
+    pass
+print('Connected to WLAN')
 
-write20.text('RAJAN goyal', 0, 0)
+response = urequests.get('https://official-joke-api.appspot.com/random_joke')
+data = response.json()
+print(data['setup'])
+print(data['punchline'])
+write20.text(data['setup'], 0, 0)
+write20.text(data['punchline'], 0, 40)
+
+# write20.text('RAJAN goyal', 0, 0)
 # 
 oled.contrast(255)
 oled.show()
-while True:
-    utime.sleep(1)
+# while True:
+#     utime.sleep(1)
 #     oled.fill(0)
-    oled.scroll(-5, 0)
-    oled.show()
+#     oled.scroll(-5, 0)
+#     oled.show()
 
 # while True:
 #     timestamp=rtc.datetime()
