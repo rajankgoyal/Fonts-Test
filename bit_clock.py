@@ -76,14 +76,15 @@ pix_res_x  = 128 # SSD1306 horizontal resolution
 pix_res_y = 64   # SSD1306 vertical resolution
 i2c_dev = I2C(1,scl=Pin(27),sda=Pin(26),freq=200000)  # start I2C on I2C1 (GPIO 26/27)
 oled = SSD1306_I2C(pix_res_x, pix_res_y, i2c_dev) # oled controller
-
+i2c_right = I2C(0,scl=Pin(21),sda=Pin(20),freq=200000)
+oled_right = SSD1306_I2C(pix_res_x, pix_res_y, i2c_right)
 # TIME
 rtc=machine.RTC()
 digit_1,digit_2,digit_3,digit_4 = 0,0,0,0
 
 #big fonts
 write20 = Write(oled, ubuntu_mono_20)
-
+write20_right = Write(oled_right, ubuntu_mono_20)
 #get_connection()
 ## Showing running time with blinking colon indicating seconds
 while True:
@@ -104,10 +105,12 @@ while True:
     write20.text(str("%02d"%(timestamp[2])), 105, 0, 1)
     write20.text(DAYS[timestamp[3]], 0, 0, 1)
     #WEATHER
-    #write20.text(' 47', 100, 0, 1)
-
+    write20_right.text(' 47', 100, 0, 1)
+    oled_right.blit(bit_numbers(4), 64, 19) # show the image at location (x=0,y=0)
+    oled_right.blit(bit_numbers(7), 94, 19) # show the image at location (x=0,y=0)
     for second in range(2):
         oled.fill_rect(60, 30, 5, 5, second)
         oled.fill_rect(60, 50, 5, 5, second)
         oled.show()
+        oled_right.show()
         utime.sleep(1)
